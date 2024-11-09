@@ -1,0 +1,13 @@
+# Formatting and Linting
+black
+pylint
+
+# Python Packages
+pandas
+numpy
+matplotlib
+seaborn
+openpyxl
+scikit-learn
+pyarrow
+statsmodels
