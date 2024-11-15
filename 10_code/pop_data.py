@@ -168,7 +168,6 @@ def melt_df(pop_df):
     return pop_df_melted
 
 
-# ------------------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     population_data = create_pop_data()
     print(population_data.head())
@@ -177,5 +176,5 @@ if __name__ == "__main__":
     # we now will reshape the data to get it in a shape that is easier for merging with our other
     #   datasets for this project
     melted_population_df = melt_df(population_data)
-    melted_population_df.to_csv("population.csv", index=False)
-    melted_population_df.to_parquet("population.parquet")
+    melted_population_df.to_csv("./00_data/population/population.csv", index=False)
+    melted_population_df.to_parquet("./00_data/population/population.parquet")
