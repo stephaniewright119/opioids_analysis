@@ -1,7 +1,7 @@
 import pandas as pd
 
 death_cause_2003 = pd.read_csv(
-    "/Users/Cindy_ggjx/cindy-opioids-2024-drugzz/00_data/US_VitalStatistics/death_cause_2003.txt",
+    "./00_data/US_VitalStatistics/death_cause_2003.txt",
     sep="\t",
 )
 death_cause_2003 = death_cause_2003.dropna(subset=["County"]).drop(
