@@ -14,8 +14,7 @@ death_cause_2003["County Code"] = death_cause_2003["County Code"].apply(
     lambda x: f"{x:05d}"
 )
 death_cause_2003 = death_cause_2003[
-    death_cause_2003["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2003["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 death_cause_2003[["County", "State"]] = death_cause_2003["County"].str.split(
     ",", expand=True
@@ -47,8 +46,7 @@ death_cause_2004["County Code"] = death_cause_2004["County Code"].apply(
     lambda x: f"{x:05d}"
 )
 death_cause_2004 = death_cause_2004[
-    death_cause_2004["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2004["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 death_cause_2004[["County", "State"]] = death_cause_2004["County"].str.split(
     ",", expand=True
@@ -81,8 +79,7 @@ death_cause_2005["County Code"] = death_cause_2005["County Code"].apply(
     lambda x: f"{x:05d}"
 )
 death_cause_2005 = death_cause_2005[
-    death_cause_2005["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2005["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 death_cause_2005[["County", "State"]] = death_cause_2005["County"].str.split(
     ",", expand=True
@@ -118,8 +115,7 @@ death_cause_2006["Deaths"] = death_cause_2006["Deaths"].astype(int)
 
 
 death_cause_2006 = death_cause_2006[
-    death_cause_2006["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2006["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -160,8 +156,7 @@ death_cause_2007["Deaths"] = death_cause_2007["Deaths"].astype(int)
 
 
 death_cause_2007 = death_cause_2007[
-    death_cause_2007["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2007["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -203,8 +198,7 @@ death_cause_2008["Deaths"] = death_cause_2008["Deaths"].astype(int)
 
 
 death_cause_2008 = death_cause_2008[
-    death_cause_2008["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2008["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -245,8 +239,7 @@ death_cause_2009["Deaths"] = death_cause_2009["Deaths"].astype(int)
 
 
 death_cause_2009 = death_cause_2009[
-    death_cause_2009["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2009["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -286,8 +279,7 @@ death_cause_2010["Deaths"] = death_cause_2010["Deaths"].astype(int)
 
 
 death_cause_2010 = death_cause_2010[
-    death_cause_2010["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2010["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -327,8 +319,7 @@ death_cause_2011["Deaths"] = death_cause_2011["Deaths"].astype(int)
 
 
 death_cause_2011 = death_cause_2011[
-    death_cause_2011["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2011["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -368,8 +359,7 @@ death_cause_2012["Deaths"] = death_cause_2012["Deaths"].astype(int)
 
 
 death_cause_2012 = death_cause_2012[
-    death_cause_2012["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2012["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -409,8 +399,7 @@ death_cause_2013["Deaths"] = death_cause_2013["Deaths"].astype(int)
 
 
 death_cause_2013 = death_cause_2013[
-    death_cause_2013["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2013["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -450,8 +439,7 @@ death_cause_2014["Deaths"] = death_cause_2014["Deaths"].astype(int)
 
 
 death_cause_2014 = death_cause_2014[
-    death_cause_2014["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2014["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
 
 
@@ -493,10 +481,8 @@ death_cause_2015["Deaths"] = pd.to_numeric(
 
 
 death_cause_2015 = death_cause_2015[
-    death_cause_2015["Drug/Alcohol Induced Cause"]
-    == "Drug poisonings (overdose) Unintentional (X40-X44)"
+    death_cause_2015["Drug/Alcohol Induced Cause Code"].isin(["D1", "D9", "D4"])
 ]
-
 
 death_cause_2015[["County", "State"]] = death_cause_2015["County"].str.split(
     ",", expand=True
