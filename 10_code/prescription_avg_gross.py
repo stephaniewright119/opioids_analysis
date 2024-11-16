@@ -40,6 +40,21 @@ prescription_data["TRANSACTION_DATE"] = dd.to_datetime(
 # Extract the year from the TRANSACTION_DATE column
 prescription_data["TRANSACTION_YEAR"] = prescription_data["TRANSACTION_DATE"].dt.year
 
+# Compute gross opioids and MME shipped in each state for each year
+print("Calculating gross opioids and MME shipped per state per year...")
+state_gross = (
+    prescription_data.groupby(["BUYER_STATE", "TRANSACTION_YEAR"])[
+        ["CALC_BASE_WT_IN_GM", "MME"]
+    ]
+    .sum()
+    .reset_index()
+)
+
+# Rename columns for clarity
+state_gross = state_gross.rename(
+    columns={"CALC_BASE_WT_IN_GM": "STATE_GROSS_BASE_WT", "MME": "STATE_GROSS_MME"}
+)
+
 # Group by BUYER_STATE, BUYER_COUNTY, and TRANSACTION_YEAR, and calculate averages
 print("Calculating averages...")
 prescription_grouped = prescription_data.groupby(
@@ -49,10 +64,16 @@ prescription_grouped = prescription_data.groupby(
 # Reset the index to make the result a DataFrame
 prescription_grouped = prescription_grouped.reset_index()
 
+# Merge the state-level gross opioids and MME data
+print("Merging gross opioids and MME data...")
+prescription_grouped = prescription_grouped.merge(
+    state_gross, on=["BUYER_STATE", "TRANSACTION_YEAR"], how="left"
+)
+
 # Compute the result and save it as a new Parquet file
 print("Saving results to Parquet file...")
 with ProgressBar():
     result_df = prescription_grouped.compute()
     result_df.to_parquet(output_parquet_path)
 
-print(f"Averages saved to Parquet file at {output_parquet_path}")
+print(f"Averages and gross data saved to Parquet file at {output_parquet_path}")
