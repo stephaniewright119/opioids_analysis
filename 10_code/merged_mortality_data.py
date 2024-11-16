@@ -35,5 +35,8 @@ dataframes = [process_death_cause_file(base_filepath.format(year)) for year in y
 # Combine all years into a single DataFrame
 death_causes_final = pd.concat(dataframes, ignore_index=True)
 
+# rename column to not have space
+death_causes_final.rename(columns={"County Code": "FIPS_CODE"}, inplace=True)
+
 # Save the final DataFrame to CSV
 death_causes_final.to_csv("./00_data/all_death_causes_2003_2015.csv", index=False)
