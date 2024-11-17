@@ -4,12 +4,12 @@ import pandas as pd
 def create_merged_df():
 
     # read in population data
-    pop_df = pd.read_parquet("../00_data/population/population.parquet")
+    pop_df = pd.read_parquet("./00_data/population/population.parquet")
     # subset to the appropriate years
     pop_df = pop_df[(pop_df["Year"] > 2002) & (pop_df["Year"] < 2016)]
 
     # read in mortality data
-    mort_df = pd.read_csv("../00_data/all_death_causes_2003_2015.csv")
+    mort_df = pd.read_csv("./00_data/all_death_causes_2003_2015.csv")
     # subset to appropriate states
     mort_df = mort_df[mort_df["State"] != "AK"]
     mort_df = mort_df[mort_df["State"] != "CT"]
@@ -27,6 +27,11 @@ def create_merged_df():
     )
 
     merged_df = merged_df.drop(columns=["County", "State", "_merge"])
+
+    # Save the merged DataFrame to a parquet file
+    output_path = "./20_intermediate_files/mort_pop_merge_unclean.parquet"
+    merged_df.to_parquet(output_path, engine="pyarrow", index=False)
+    print(f"Merged DataFrame saved to {output_path}")
 
     return merged_df
 
