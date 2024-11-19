@@ -21,7 +21,7 @@ import os
 
 # File paths
 input_parquet_path = "./20_intermediate_files/prescription_subset.parquet"
-output_parquet_path = "./20_intermediate_files/prescription_avg_gross.parquet"
+output_parquet_path = "./20_intermediate_files/prescription_sums.parquet"
 
 # Check if the Parquet file exists
 if not os.path.exists(input_parquet_path):
@@ -40,45 +40,19 @@ prescription_data["TRANSACTION_DATE"] = dd.to_datetime(
 # Extract the year from the TRANSACTION_DATE column
 prescription_data["TRANSACTION_YEAR"] = prescription_data["TRANSACTION_DATE"].dt.year
 
-# Compute gross opioids and MME shipped in each state for each year
-print("Calculating gross opioids and MME shipped per state per year...")
-state_gross = (
-    prescription_data.groupby(["BUYER_STATE", "TRANSACTION_YEAR"])[
-        "CALC_BASE_WT_IN_GM", "MME"
-    ]
-    .sum()
-    .reset_index()
-)
-
-# Rename columns for clarity
-state_gross = state_gross.rename(
-    columns={"CALC_BASE_WT_IN_GM": "STATE_GROSS_BASE_WT", "MME": "STATE_GROSS_MME"}
-)
-
 # Group by BUYER_STATE, BUYER_COUNTY, and TRANSACTION_YEAR, and calculate averages
 print("Calculating averages...")
-prescription_grouped_avg = prescription_data.groupby(
+prescription_sums = prescription_data.groupby(
     ["BUYER_STATE", "BUYER_COUNTY", "TRANSACTION_YEAR"]
-)["CALC_BASE_WT_IN_GM", "MME"].mean()
+)["CALC_BASE_WT_IN_GM", "MME"].sum()
 
 # Reset the index to make the result a DataFrame
-prescription_grouped_avg = prescription_grouped_avg.reset_index()
-
-# Rename columns for averages
-prescription_grouped_avg = prescription_grouped_avg.rename(
-    columns={"CALC_BASE_WT_IN_GM": "AVG_CALC_BASE_WT_IN_GM", "MME": "AVG_MME"}
-)
-
-# Merge the state-level gross opioids and MME data
-print("Merging gross opioids and MME data...")
-prescription_grouped_avg = prescription_grouped_avg.merge(
-    state_gross, on=["BUYER_STATE", "TRANSACTION_YEAR"], how="left"
-)
+prescription_sums = prescription_sums.reset_index()
 
 # Compute the result and save it as a new Parquet file
 print("Saving results to Parquet file...")
 with ProgressBar():
-    result_df = prescription_grouped_avg.compute()
+    result_df = prescription_sums.compute()
     result_df.to_parquet(output_parquet_path)
 
 print(f"Averages and gross data saved to Parquet file at {output_parquet_path}")
