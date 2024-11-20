@@ -1,7 +1,8 @@
 import pandas as pd
 
 prescription_subset_df = pd.read_parquet(
-    "./20_intermediate_files/prescription_subset.parquet", engine="fastparquet"
+    "./20_intermediate_files/prescription_subset_more_drugs.parquet",
+    engine="fastparquet",
 )
 
 prescription_subset_df.head()
@@ -72,8 +73,8 @@ popu_df["CTY_NAME"] = (
 )
 
 
-prescription_subset_df["BUYER_COUNTY"] = (
-    prescription_subset_df["BUYER_COUNTY"].str.strip().str.upper()
+prescription_subset_df["COUNTY"] = (
+    prescription_subset_df["COUNTY"].str.strip().str.upper()
 )
 
 
@@ -81,7 +82,7 @@ prescription_subset_df["BUYER_COUNTY"] = (
 merged_df = pd.merge(
     prescription_subset_df,
     popu_df,
-    left_on=["BUYER_STATE", "BUYER_COUNTY", "year"],
+    left_on=["STATE", "COUNTY", "YEAR"],
     right_on=["ST_NAME", "CTY_NAME", "Year"],
     how="left",
 )
@@ -89,12 +90,11 @@ merged_df = pd.merge(
 # Keep only the relevant columns
 merged_df = merged_df[
     [
-        "BUYER_STATE",
-        "BUYER_COUNTY",
-        "year",
-        "MME_Conversion_Factor",
-        "CALC_BASE_WT_IN_GM",
-        "strength",
+        "STATE",
+        "COUNTY",
+        "YEAR",
+        "CALC_MME",
+        "MME",
         "FIPS_CODE",
         "Population",
     ]
@@ -105,13 +105,13 @@ merged_df["FIPS_CODE"] = merged_df["FIPS_CODE"].astype(int)
 merged_df["Population"] = merged_df["Population"].astype(int)
 
 wa_states = ["WA", "OR", "CA", "CO", "MT"]
-wa_controls_prescrip = merged_df[merged_df["BUYER_STATE"].isin(wa_states)]
+wa_controls_prescrip = merged_df[merged_df["STATE"].isin(wa_states)]
 wa_controls_prescrip.to_parquet(
     "20_intermediate_files/wa_controls_prescrip.parquet", index=False
 )
 
 fl_states = ["FL", "GA", "SC", "NC", "AL"]
-fl_controls_prescrip = merged_df[merged_df["BUYER_STATE"].isin(fl_states)]
+fl_controls_prescrip = merged_df[merged_df["STATE"].isin(fl_states)]
 fl_controls_prescrip.to_parquet(
     "20_intermediate_files/fl_controls_prescrip.parquet", index=False
 )
