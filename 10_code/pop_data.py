@@ -77,6 +77,7 @@ def subset_pop2000_cols(dataset):
             "POPESTIMATE2006",
             "POPESTIMATE2007",
             "POPESTIMATE2008",
+            "POPESTIMATE2009",
         ]
     ]
     return dataset

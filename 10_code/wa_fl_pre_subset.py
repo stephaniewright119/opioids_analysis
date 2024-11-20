@@ -1,11 +1,13 @@
 import pandas as pd
 
-prescription_subset_df = pd.read_parquet("/workspaces/cindy-opioids-2024-drugzz/20_intermediate_files/prescription_subset.parquet", engine="fastparquet")
+prescription_subset_df = pd.read_parquet(
+    "./20_intermediate_files/prescription_subset.parquet", engine="fastparquet"
+)
 
 prescription_subset_df.head()
 
 
-popu_df = pd.read_csv("00_data/population/population.csv")
+popu_df = pd.read_parquet("00_data/population/population.parquet")
 popu_df
 
 
@@ -70,16 +72,18 @@ popu_df["CTY_NAME"] = (
 )
 
 
-prescription_subset_df["BUYER_COUNTY"] = prescription_subset_df["BUYER_COUNTY"].str.strip().str.upper()
+prescription_subset_df["BUYER_COUNTY"] = (
+    prescription_subset_df["BUYER_COUNTY"].str.strip().str.upper()
+)
 
 
 # Merge the datasets
 merged_df = pd.merge(
     prescription_subset_df,
     popu_df,
-    left_on=["BUYER_STATE", "BUYER_COUNTY", "year"], 
-    right_on=["ST_NAME", "CTY_NAME", "Year"],  
-    how="left", 
+    left_on=["BUYER_STATE", "BUYER_COUNTY", "year"],
+    right_on=["ST_NAME", "CTY_NAME", "Year"],
+    how="left",
 )
 
 # Keep only the relevant columns
@@ -111,4 +115,3 @@ fl_controls_prescrip = merged_df[merged_df["BUYER_STATE"].isin(fl_states)]
 fl_controls_prescrip.to_parquet(
     "20_intermediate_files/fl_controls_prescrip.parquet", index=False
 )
-
