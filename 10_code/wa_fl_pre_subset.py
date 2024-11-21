@@ -104,6 +104,8 @@ merged_df = merged_df.dropna(subset=["FIPS_CODE", "Population"])
 merged_df["FIPS_CODE"] = merged_df["FIPS_CODE"].astype(int)
 merged_df["Population"] = merged_df["Population"].astype(int)
 
+merged_df.to_parquet("20_intermediate_files/drug_data.parquet", index=False)
+
 wa_states = ["WA", "OR", "CA", "CO", "MT"]
 wa_controls_prescrip = merged_df[merged_df["STATE"].isin(wa_states)]
 wa_controls_prescrip.to_parquet(
