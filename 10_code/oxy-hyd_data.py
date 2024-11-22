@@ -77,6 +77,33 @@ prescription_subset_df["COUNTY"] = (
     prescription_subset_df["COUNTY"].str.strip().str.upper()
 )
 
+# We noticed there was discrpency in county names between the two datasets, updating here
+# Alabama
+popu_df.loc[popu_df["ST_NAME"] == "Alabama", "CTY_NAME"] = popu_df.loc[
+    popu_df["ST_NAME"] == "Alabama", "CTY_NAME"
+].replace("ST. CLAIR", "SAINT CLAIR")
+popu_df.loc[popu_df["ST_NAME"] == "Alabama", "CTY_NAME"] = popu_df.loc[
+    popu_df["ST_NAME"] == "Alabama", "CTY_NAME"
+].replace("DEKALB", "DE KALB")
+
+# Michigan
+popu_df.loc[popu_df["ST_NAME"] == "Michigan", "CTY_NAME"] = popu_df.loc[
+    popu_df["ST_NAME"] == "Michigan", "CTY_NAME"
+].replace("ST. CLAIR", "SAINT CLAIR")
+popu_df.loc[popu_df["ST_NAME"] == "Michigan", "CTY_NAME"] = popu_df.loc[
+    popu_df["ST_NAME"] == "Michigan", "CTY_NAME"
+].replace("ST. JOSEPH", "SAINT JOSEPH")
+
+# Florida
+popu_df.loc[popu_df["ST_NAME"] == "Florida", "CTY_NAME"] = popu_df.loc[
+    popu_df["ST_NAME"] == "Florida", "CTY_NAME"
+].replace("DESOTO", "DE SOTO")
+popu_df.loc[popu_df["ST_NAME"] == "Florida", "CTY_NAME"] = popu_df.loc[
+    popu_df["ST_NAME"] == "Florida", "CTY_NAME"
+].replace("SAINT LUCIE", "ST. LUCIE")
+popu_df.loc[popu_df["ST_NAME"] == "Florida", "CTY_NAME"] = popu_df.loc[
+    popu_df["ST_NAME"] == "Florida", "CTY_NAME"
+].replace("SAINT JOHNS", "ST. JOHNS")
 
 # Merge the datasets
 merged_df = pd.merge(
