@@ -39,6 +39,8 @@ wa_drugs_did = pd.read_parquet("20_intermediate_files/wa_controls_prescrip.parqu
 
 wa_drugs_did["MMEPC"] = wa_drugs_did["CALC_MME"] / wa_drugs_did["Population"]
 
+wa_drugs_did = wa_drugs_did[wa_drugs_did["STATE"] != "CA"]
+
 wa_drugs_pp = wa_drugs_did[wa_drugs_did["STATE"] == "WA"]
 wa_drugs_pp["post"] = np.where(wa_drugs_pp["YEAR"] > 2011, 1, 0)
 
