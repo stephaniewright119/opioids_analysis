@@ -46,6 +46,31 @@ def create_pop_data():
     #       so we drop these rows
     population_data = drop_stateonly_rows(population_data)
 
+    # we have noticed there are a couple of states whose naming is different
+    # Alabama
+    population_data.loc[population_data["state"] == "Alabama", "county"] = (
+        population_data.loc[population_data["state"] == "Alabama", "county"].replace(
+            "Saint Clair", "St. Clair"
+        )
+    )
+    population_data.loc[population_data["state"] == "Alabama", "county"] = (
+        population_data.loc[population_data["state"] == "Alabama", "county"].replace(
+            "Saint Clair", "St. Clair"
+        )
+    )
+    # Michigan
+    population_data.loc[population_data["state"] == "Alabama", "county"] = (
+        population_data.loc[population_data["state"] == "Alabama", "county"].replace(
+            "Saint Clair", "St. Clair"
+        )
+    )
+    # Florida
+    population_data.loc[population_data["state"] == "Alabama", "county"] = (
+        population_data.loc[population_data["state"] == "Alabama", "county"].replace(
+            "Saint Clair", "St. Clair"
+        )
+    )
+
     return population_data
 
 
@@ -77,6 +102,7 @@ def subset_pop2000_cols(dataset):
             "POPESTIMATE2006",
             "POPESTIMATE2007",
             "POPESTIMATE2008",
+            "POPESTIMATE2009",
         ]
     ]
     return dataset
