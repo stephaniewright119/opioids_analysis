@@ -123,6 +123,10 @@ merged_df = merged_df[
         "Population",
     ]
 ]
+
+# Drop 2019 data
+merged_df = merged_df[merged_df["YEAR"] != 2019]
+# Drop missing values just in case we still have, but we should have dealed with them above.
 merged_df = merged_df.dropna(subset=["FIPS_CODE", "Population"])
 
 merged_df["FIPS_CODE"] = merged_df["FIPS_CODE"].astype(int)
