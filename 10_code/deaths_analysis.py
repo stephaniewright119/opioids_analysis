@@ -26,7 +26,7 @@ fl_deaths_pp["post"] = np.where(fl_deaths_pp["Year"] > 2009, 1, 0)
 
 wa_deaths_did = deaths[
     deaths["ST_NAME"].isin(
-        ["Washington", "Oregon", "California", "Colorado", "Montana"]
+        ["Washington", "Oregon", "Colorado", "Montana"]
     )
 ]
 
