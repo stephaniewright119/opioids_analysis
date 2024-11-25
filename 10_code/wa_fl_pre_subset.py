@@ -134,7 +134,7 @@ merged_df["Population"] = merged_df["Population"].astype(int)
 
 merged_df.to_parquet("20_intermediate_files/drug_data.parquet", index=False)
 
-wa_states = ["WA", "OR", "CA", "CO", "MT"]
+wa_states = ["WA", "OR", "CO", "MT"]
 wa_controls_prescrip = merged_df[merged_df["STATE"].isin(wa_states)]
 wa_controls_prescrip.to_parquet(
     "20_intermediate_files/wa_controls_prescrip.parquet", index=False
