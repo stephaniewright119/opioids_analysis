@@ -6,7 +6,7 @@ def impute_and_save_deaths(input_path, output_path):
     mort_pop_unclean = pd.read_parquet(input_path, engine="fastparquet")
 
     # Identify rows with missing deaths
-    counties_missing_deaths = mort_pop_unclean[mort_pop_unclean["Deaths"].isna()]
+    missing_deaths_mask = mort_pop_unclean["Deaths"].isna()
 
     # Step 1: Calculate state-year death rate
     state_year_totals = (
@@ -21,27 +21,49 @@ def impute_and_save_deaths(input_path, output_path):
     )
 
     # Step 2: Merge death rate back to the original dataset
-    mort_pop_no_missing = mort_pop_unclean.merge(
+    mortality_population_with_death_rate = mort_pop_unclean.merge(
         state_year_totals[["ST_NAME", "Year", "death_rate"]],
         on=["ST_NAME", "Year"],
         how="left",
     )
 
-    # Step 3: Impute missing deaths
-    mort_pop_no_missing["Deaths"] = mort_pop_no_missing["Deaths"].fillna(
-        mort_pop_no_missing["Population"] * mort_pop_no_missing["death_rate"]
+    # Print the number of rows with death count of 10 before imputing
+    rows_with_deaths_10_before = (
+        mortality_population_with_death_rate["Deaths"] == 10
+    ).sum()
+    print(
+        f"Number of rows with death count of 10 before imputing: {rows_with_deaths_10_before}"
     )
 
-    # Step 4: Round deaths to the nearest integer
-    mort_pop_no_missing["Deaths"] = mort_pop_no_missing["Deaths"].round()
+    # Step 3: Impute missing deaths
+    mortality_population_with_death_rate.loc[missing_deaths_mask, "Deaths"] = (
+        mortality_population_with_death_rate.loc[missing_deaths_mask, "Population"]
+        * mortality_population_with_death_rate.loc[missing_deaths_mask, "death_rate"]
+    )
 
-    # Step 5: Force imputed values greater than 10 to be 9
-    mort_pop_no_missing["Deaths"] = mort_pop_no_missing["Deaths"].apply(
-        lambda x: 9 if pd.isna(x) is False and x > 10 else x
+    # Step 4: Force imputed values greater than 10 to be 9.999999
+    mortality_population_with_death_rate.loc[missing_deaths_mask, "Deaths"] = (
+        mortality_population_with_death_rate.loc[missing_deaths_mask, "Deaths"].apply(
+            lambda x: 9.999999 if x >= 10 else x
+        )
+    )
+
+    # Print the number of rows imputed to have deaths >= 10
+    imputed_rows_above_10 = (
+        mortality_population_with_death_rate.loc[missing_deaths_mask, "Deaths"] >= 10
+    ).sum()
+    print(f"Number of rows imputed to have deaths >= 10: {imputed_rows_above_10}")
+
+    # Print the number of rows with death count of 10 after imputing
+    rows_with_deaths_10_after = (
+        mortality_population_with_death_rate["Deaths"] == 10
+    ).sum()
+    print(
+        f"Number of rows with death count of 10 after imputing: {rows_with_deaths_10_after}"
     )
 
     # Save the resulting dataset to the output path
-    mort_pop_no_missing.to_parquet(output_path, index=False)
+    mortality_population_with_death_rate.to_parquet(output_path, index=False)
 
 
 if __name__ == "__main__":
