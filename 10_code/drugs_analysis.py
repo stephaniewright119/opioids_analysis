@@ -12,7 +12,7 @@ pd.set_option("mode.copy_on_write", True)
 
 fl_drugs_did = pd.read_parquet("20_intermediate_files/fl_controls_prescrip.parquet")
 
-fl_drugs_did["MMEPC"] = fl_drugs_did["MME"] / fl_drugs_did["Population"]
+fl_drugs_did["MMEPC"] = fl_drugs_did["CALC_MME"] / fl_drugs_did["Population"]
 
 fl_drugs_pp = fl_drugs_did[fl_drugs_did["STATE"] == "FL"]
 fl_drugs_pp["post"] = np.where(fl_drugs_pp["YEAR"] > 2009, 1, 0)
@@ -79,10 +79,10 @@ wa_drugs_pp_plot = sns.lmplot(
 ax = wa_drugs_pp_plot.ax
 
 ax.axvline(x=2012, color="black", linestyle="--", linewidth=1, label="Policy Change")
-
-ax.set_title("Washington Opioid (MME) Shipments Per Capita (Pre vs. Post Policy)")
+# this is actually MGE not MME based on how we calculated previously
+ax.set_title("Washington Opioid (MGE) Shipments Per Capita (Pre vs. Post Policy)")
 ax.set_xlabel("Year")
-ax.set_ylabel("Opioid (MME) Shipments Per Capita")
+ax.set_ylabel("Opioid (MGE) Shipments Per Capita")
 
 custom_lines = [
     plt.Line2D([0], [0], color=sns.color_palette()[0], lw=2, label="Pre-Policy"),
@@ -111,9 +111,9 @@ ax = fl_drugs_pp_plot.ax
 
 ax.axvline(x=2010, color="black", linestyle="--", linewidth=1, label="Policy Change")
 
-ax.set_title("Florida Opioid (MME) Shipments Per Capita (Pre vs. Post Policy)")
+ax.set_title("Florida Opioid (MGE) Shipments Per Capita (Pre vs. Post Policy)")
 ax.set_xlabel("Year")
-ax.set_ylabel("Opioid (MME) Shipments Per Capita")
+ax.set_ylabel("Opioid (MGE) Shipments Per Capita")
 
 custom_lines = [
     plt.Line2D([0], [0], color=sns.color_palette()[0], lw=2, label="Pre-Policy"),
@@ -143,9 +143,9 @@ ax = wa_drugs_did_plot.ax
 
 plt.axvline(x=2012, color="black", linestyle="--", linewidth=1, label="Policy Change")
 
-plt.title("Opioid (MME) Shipments Per Capita (Pre vs. Post Policy)")
+plt.title("Opioid (MGE) Shipments Per Capita (Pre vs. Post Policy)")
 plt.xlabel("Year")
-plt.ylabel("Opioid (MME) Shipments Per Capita")
+plt.ylabel("Opioid (MGE) Shipments Per Capita")
 
 custom_lines = [
     plt.Line2D([0], [0], color=sns.color_palette()[0], lw=2, label="Washington"),
@@ -175,9 +175,9 @@ ax = fl_drugs_did_plot.ax
 
 plt.axvline(x=2010, color="black", linestyle="--", linewidth=1, label="Policy Change")
 
-plt.title("pioid (MME) Shipments Per Capita (Pre vs. Post Policy)")
+plt.title("Opioid (MGE) Shipments Per Capita (Pre vs. Post Policy)")
 plt.xlabel("Year")
-plt.ylabel("pioid (MME) Shipments Per Capita")
+plt.ylabel("Opioid (MGE) Shipments Per Capita")
 
 custom_lines = [
     plt.Line2D([0], [0], color=sns.color_palette()[0], lw=2, label="Florida"),
