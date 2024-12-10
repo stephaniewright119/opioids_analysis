@@ -12,6 +12,9 @@ pd.set_option("mode.copy_on_write", True)
 
 fl_drugs_did = pd.read_parquet("20_intermediate_files/fl_controls_prescrip.parquet")
 
+fl_drugs_did = fl_drugs_did[fl_drugs_did["STATE"].isin(["FL", "SC", "AL", "OH"])]
+fl_drugs_did = fl_drugs_did[~fl_drugs_did["COUNTY"].isin(["BROWARD", "HILLSBOROUGH"])]
+
 fl_drugs_did["MMEPC"] = fl_drugs_did["CALC_MME"] / fl_drugs_did["Population"]
 
 fl_drugs_pp = fl_drugs_did[fl_drugs_did["STATE"] == "FL"]
