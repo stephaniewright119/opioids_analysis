@@ -140,7 +140,7 @@ wa_controls_prescrip.to_parquet(
     "20_intermediate_files/wa_controls_prescrip.parquet", index=False
 )
 
-fl_states = ["FL", "GA", "SC", "NC", "AL"]
+fl_states = ["FL", "SC", "AL", "OH"]
 fl_controls_prescrip = merged_df[merged_df["STATE"].isin(fl_states)]
 fl_controls_prescrip.to_parquet(
     "20_intermediate_files/fl_controls_prescrip.parquet", index=False
